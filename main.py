@@ -11,8 +11,14 @@ SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 REPS = 0
 CHECKMARK = "✔"
-
+timer = None
 # ---------------------------- TIMER RESET ------------------------------- #
+
+def reset_timer():
+    window.after_cancel(timer)
+    canvas.itemconfig(timer_text, text="00:00")
+    checkmarks.config(text="")
+    tomator.config(text="Pro")
 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
@@ -47,7 +53,8 @@ def count_down(count):
     if count_seconds < 10:
         count_seconds = f"0{count_seconds}"
     if (count != 0):
-        window.after(1000, count_down, count-1)
+        global timer
+        timer = window.after(1000, count_down, count-1)
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_seconds}")
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -85,7 +92,7 @@ def start():
 start = Button(text="Start", highlightthickness=0, font=(FONT_NAME, 24), command=start_timer)
 start.grid(column=0, row=3)
 
-reset = Button(text="Reset", highlightthickness=0, font=(FONT_NAME, 24))
+reset = Button(text="Reset", highlightthickness=0, font=(FONT_NAME, 24), command=reset_timer)
 reset.grid(column=2, row=3)
 
 
